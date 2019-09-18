@@ -1,8 +1,13 @@
-# Valorous Voronoi
+## Attribution
+Valorous Voronoi is a project by **Ricardo Aguilera**
 
-Valorous Voronoi is a two-player battle arcade game set on dynamically rendered Voronoi diagrams. Each player is associated with one color. The game is played in two phases: setup and combat. During setup, each player puts 5 bases on the screen, without knowledge of where the opponent's bases as they place them. The location of each base is then revealed, and a Voronoi diagram is drawn, using each base as a point for the diagram. The cells are filled in with the base owner's color.
+## Description
+
+Valorous Voronoi is a two-player arcade battle game set on a dynamically rendered Voronoi diagram. Each player is associated with one color. The game is played in two phases: setup and combat. During setup, each player puts 5 bases on the screen, without knowledge of where the opponent's bases as they place them. The location of each base is then revealed, and a Voronoi diagram is drawn, using each base as a point for the diagram. The cells are filled in with the base owner's color.
 
 The combat phase then begins. Both players can move around the field. Players can hit their own bases to move them, affecting the shape of the diagram. Players themselves may be treated as points for their own bases. Other concrete aspects of the combat phase will be arrived at with experimentation. What is currently set in stone is that players will fight on the diagram and that the diagram will dynamically change through the round.
+
+## Schedule
 
 Week | Milestone
 ---- | ---------
