@@ -1,37 +1,21 @@
-## Welcome to GitHub Pages
+## Voronoi Victory
 
-You can use the [editor on GitHub](https://github.com/Rafer45/voronoi/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Voronoi Victory is a two-player battle arcade game set on dynamically rendered Voronoi diagrams. Each player is associated with one color. The game is played in two phases: setup and combat. During setup, each player puts 5 bases on the screen, without knowledge of where the opponent's bases as they place them. The location of each base is then revealed, and a Voronoi diagram is drawn, using each base as a point for the diagram. The cells are filled in with the base owner's color.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+The combat phase then begins. Both players can move around the field. Players can hit their own bases to move them, affecting the shape of the diagram. Players themselves may be treated as points for their own bases. Other concrete aspects of the combat phase will be arrived at with experimentation. What is currently set in stone is that players will fight on the diagram and that the diagram will dynamically change through the round.
 
-### Markdown
+Week | Milestone
+---- | ---------
+4    | Make project website
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Rafer45/voronoi/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+5    | Learn to use PixiJS (Complete the demos in pixiJS website)
+6    | Compute static randomly generated Voronoi diagram
+7    | Render static randomly generated Voronoi diagram
+8    | Render filled in diagram from dropped points
+9    | Add players
+10   | Treat players as Voronoi points
+11   | Let players attack each other and each other's bases (ballistic physics for bases)
+12   | Add sound effects
+13   | Add start menu
+14   | Add particle effects, screenshake, randomized initial colors
+15   | Buffer week
