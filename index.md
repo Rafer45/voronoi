@@ -6,7 +6,7 @@ Valorous Voronoi is a two-player arcade battle game set on a dynamically rendere
 The combat phase then begins. Both players can move around the field. Players can hit their own bases to move them, affecting the shape of the diagram. Players themselves may be treated as points for the Voronoi diagram. Other concrete aspects of the combat phase will be arrived at with experimentation. As an example of a possible mechanic: players may be the same color as the background of their bases, making them invisible against their own background. What is currently set in stone is that players will fight on the diagram and that the diagram will dynamically change through the round.
 
 ## Technology
-Valorous Voronoi will use [pixiJS](https://www.pixijs.com/) for rendering.
+Valorous Voronoi will use [three.js](https://threejs.org/) for rendering.
 
 ## Schedule
 
@@ -26,5 +26,5 @@ Week | Milestone
 15   | Buffer week
 
 ## References
-1. [pixiJS](https://www.pixijs.com/)
+1. [three.js](https://threejs.org/)
 2. Wikipedia contributors, "Voronoi diagram," *Wikipedia, The Free Encyclopedia*. [Link](https://en.wikipedia.org/wiki/Voronoi_diagram)
