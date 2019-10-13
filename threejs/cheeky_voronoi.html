@@ -1,0 +1,125 @@
+
+<!-- This code is slightly modified from https://threejsfundamentals.org/threejs/lessons/threejs-fundamentals.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    html, body {
+       margin: 0;
+       height: 100%;
+    }
+    #c {
+       width: 100%;
+       height: 100%;
+       display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+</body>
+<script type="module">
+import * as THREE from './resources/js/three.js';
+
+function main() {
+  const canvas = document.querySelector('#c');
+  const renderer = new THREE.WebGLRenderer({canvas});
+
+  const near = 0;
+  const far = 200;
+  const camera = new THREE.OrthographicCamera(-2, 2, 3, -3, near, far);
+
+  const scene = new THREE.Scene();
+
+  // LIGHT FOR DEBUGGING
+  // {
+  //   const color = 0xFFFFFF;
+  //   const intensity = 1;
+  //   const light = new THREE.DirectionalLight(color, intensity);
+  //   light.position.set(-1, 2, 4);
+  //   scene.add(light);
+  // }
+
+  function makeInstance(geometry, color, x, y) {
+    // 3D ISH MATERIAL FOR DEBUGGING
+    // const material = new THREE.MeshPhongMaterial({color});
+    const material = new THREE.MeshBasicMaterial({color});
+
+    const shape = new THREE.Mesh(geometry, material);
+    scene.add(shape);
+
+    shape.position.x = x;
+    shape.position.y = y;
+
+    return shape;
+  }
+
+  function makeVoronoiCell(color, x, y) {
+    const coneRadius = 5;
+    const coneHeight = 0.5;
+    const coneSegments = 64;
+    const cone = new THREE.ConeGeometry(coneRadius, coneHeight, coneSegments, 1, true);
+
+    const coneMesh = makeInstance(cone, color, x, y)
+    coneMesh.lookAt(new THREE.Vector3(x, y, 5))
+    coneMesh.rotation.x = 1.57;
+    coneMesh.position.z = -2
+
+    const dotRadius = 0.02;
+    const dotSegments = 32;
+    const dot = new THREE.CircleGeometry(dotRadius, dotSegments);
+    const dotMesh = makeInstance(dot, 0xFFFFFF, coneMesh.position.x, coneMesh.position.y);
+    dotMesh.position.z = -1;
+
+    return [coneMesh, dotMesh];
+  }
+
+  const voronoiAmount = 50
+  const voronoiCells = [];
+  let color;
+  let x;
+  let y;
+  for (let i = 0; i < 50; i++) {
+    color = Math.random()*(0xFFFFFF)
+    x = Math.random()*6 - 3;
+    y = Math.random()*3 - 1.5;
+    console.log(x,y)
+    voronoiCells.push(makeVoronoiCell(color, x, y))
+  }
+
+  function resizeRendererToDisplaySize(renderer) {
+    const canvas = renderer.domElement;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const needResize = canvas.width !== width || canvas.height !== height;
+
+    return needResize;
+  }
+
+  function render(time) {
+    time *= 0.001;
+
+    if (resizeRendererToDisplaySize(renderer)) {
+      console.log("need resize!")
+      const canvas = renderer.domElement;
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+      const height = camera.top - camera.bottom;
+      const width = height * (canvas.clientWidth / canvas.clientHeight);
+      camera.left = -width/2
+      camera.right = width/2
+      camera.updateProjectionMatrix();
+    }
+
+    renderer.render(scene, camera);
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
+}
+
+main();
+</script>
+</html>
