@@ -13,7 +13,7 @@ Valorous Voronoi will use [three.js](https://threejs.org/) for rendering.
 Week | Milestone
 ---- | ---------
 4    | Make project website
-5    | Learn to use PixiJS (Complete the demos in pixiJS website)
+5    | Learn to use three.js (Complete the demos in three.js website)
 6    | Compute static randomly generated Voronoi diagram
 7    | Render static randomly generated Voronoi diagram
 8    | Render filled in diagram from dropped points
