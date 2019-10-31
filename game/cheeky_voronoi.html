@@ -91,9 +91,10 @@ function main() {
 
   const voronoiAmount = 50
   const voronoiCells = [];
-  
-  for (let i = 0; i < 50; i++) {
-    let color = Math.random()*(0xFFFFFF)
+  let color = new THREE.Color();
+  color.setHSL(Math.random(), 0.5, 0.7);
+  for (let i = 0; i < voronoiAmount; i++) {
+    color.offsetHSL(1.0/voronoiAmount, 0, 0);
     let x = Math.random()*6 - 3;
     let y = Math.random()*3 - 1.5;
     console.log(x,y);
