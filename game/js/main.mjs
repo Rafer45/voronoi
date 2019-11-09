@@ -11,16 +11,10 @@ render();
 function bindEventListeners() {
   window.onresize = resizeCanvas;
   window.onclick = clickMouse;
-  resizeCanvas(); 
+  resizeCanvas();
 }
 
 function resizeCanvas() {
-  canvas.style.width = '100%';
-  canvas.style.height= '100%';
-  
-  canvas.width  = canvas.clientWidth;
-  canvas.height = canvas.clientHeight;
-  
   sceneManager.onWindowResize();
 }
 

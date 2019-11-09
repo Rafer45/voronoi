@@ -3,7 +3,6 @@ import { VoronoiCell } from './VoronoiCell.mjs'
 import * as THREE from './libs/thr.js';
 
 function VoronoiField(scene) {
-  console.log("NEW VORONONOROI FELD")
   const voronoiCount = 20;
   const cells = [];
 
@@ -31,9 +30,6 @@ function VoronoiField(scene) {
   }
 
   this.onMouseClick = (event) => {
-    // event.position.x = 0;
-    // event.position.y = 0;
-    // event.position.z = 0;
     console.log(field.position);
     console.log("goes to");
     console.log(event.position);

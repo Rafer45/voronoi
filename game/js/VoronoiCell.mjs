@@ -37,8 +37,6 @@ function VoronoiCell(scene, color, x, y) {
 
 // TODO: Move this somewhere else so it can be used by other files
 function makeMesh(geometry, color) {
-  // 3D ISH MATERIAL FOR DEBUGGING
-  // const material = new THREE.MeshPhongMaterial({color});
   const material = new THREE.MeshBasicMaterial({color});
   const mesh = new THREE.Mesh(geometry, material);
 

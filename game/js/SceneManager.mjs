@@ -1,14 +1,14 @@
 
 import { VoronoiField } from './VoronoiField.mjs'
-import * as THREE from './libs/thre.js';
+import * as THREE from './libs/thr.js';
 
 function SceneManager(canvas) {
 
   const clock = new THREE.Clock();
 
   const screenDimensions = {
-    width: canvas.width,
-    height: canvas.height
+    width: canvas.clientWidth,
+    height: canvas.clientHeight
   }
 
   const scene = buildScene();
@@ -28,11 +28,7 @@ function SceneManager(canvas) {
       canvas: canvas,
       antialias: false,
       alpha: false
-    })
-
-    const DPR = window.devicePixelRatio || 1;
-    renderer.setPixelRatio(DPR);
-    renderer.setSize(width, height);
+    });
 
     renderer.gammaInput = true;
     renderer.gammaOutput = true;
@@ -71,7 +67,9 @@ function SceneManager(canvas) {
 
   this.onWindowResize = () => {
     console.log("need resize!")
-    const { width, height } = canvas;
+    const { clientWidth, clientHeight } = canvas;
+    const width = clientWidth;
+    const height = clientHeight;
 
     renderer.setSize(width, height, false);
 
@@ -92,7 +90,8 @@ function SceneManager(canvas) {
        (event.clientX / width) * 2 - 1,
       -(event.clientY / height) * 2 + 1,
       0.5);
-
+    console.log("ex:", event.clientX)
+    console.log("w:", width)
     vec.unproject(camera);
     vec.sub(camera.position).normalize();
 
@@ -100,7 +99,6 @@ function SceneManager(canvas) {
 
     pos.copy(camera.position).add(vec.multiplyScalar(distance));
     for (let sceneSubject of sceneSubjects) {
-      console.log(sceneSubject);
       sceneSubject.onMouseClick({ position: pos });
     }
   }
