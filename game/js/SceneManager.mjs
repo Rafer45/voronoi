@@ -83,27 +83,34 @@ function SceneManager(canvas) {
     camera.updateProjectionMatrix();
   }
 
-  const vec = new THREE.Vector3();
-  const pos = new THREE.Vector3();
   this.onMouseClick = (event) => {
     console.log("mouse clicked!");
-    const { width, height } = canvas;
 
-    vec.set(
-       (event.clientX / width) * 2 - 1,
-      -(event.clientY / height) * 2 + 1,
-      0.5);
-    console.log("ex:", event.clientX)
-    console.log("w:", width)
-    vec.unproject(camera);
-    vec.sub(camera.position).normalize();
+    clickPointToWorldPoint(event.clientX, event.clientY);
 
-    const distance = -camera.position.z/vec.z;
-
-    pos.copy(camera.position).add(vec.multiplyScalar(distance));
     for (let sceneSubject of sceneSubjects) {
       sceneSubject.onMouseClick({ position: pos });
     }
+  }
+
+  // Assumes we have a top-down orthographic camera.
+  // Takes the coordinate of a click on the window.
+  // Returns the coordinate of the corresponding world point
+  //   in the z=0 plane.
+  // TODO: Move this somewhere where it can be more broadly used.
+  const pos = new THREE.Vector3(); // pos defined outside for memory efficiency
+  function clickPointToWorldPoint(x, y) {
+    const { clientWidth, clientHeight } = canvas;
+    const width = clientWidth;
+    const height = clientHeight;
+
+    pos.set(
+       (x / width) * 2 - 1,
+      -(y / height) * 2 + 1,
+      0);
+
+    pos.unproject(camera);
+    return pos;
   }
 }
 
