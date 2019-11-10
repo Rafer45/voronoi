@@ -1,6 +1,12 @@
 
 import * as THREE from './libs/thr.js';
 
+// Replaces update function when cell shouldn't listen to regular updates
+//   so that it does nothing every frame.
+function nop() {
+  // do nothing
+}
+
 function VoronoiCell(scene, color, x, y) {
   const cellMesh = new THREE.Object3D();
 
@@ -30,8 +36,26 @@ function VoronoiCell(scene, color, x, y) {
   const tShift = Math.random()*2*Math.PI;
   const speed = Math.random()*0.9 + 0.01;
   const amplitude = Math.random()*0.6 + 0.1;
-  this.update = (time) => {
-     this.x = x + amplitude*Math.sin(tShift + speed*t);
+
+  // Used so the voronoi cell initially appears at its x, y coordinate
+  const ampSinTShift = amplitude*Math.sin(tShift);
+  let lifeTime = 0;
+
+  function sinUpdate(deltaTime) {
+    lifeTime += deltaTime;
+
+    let newX = x + amplitude*Math.sin(speed*lifeTime + tShift) - amplitude*Math.sin(tShift);
+    this.mesh.position.setX(newX);
+  }
+
+  this.update = sinUpdate;
+
+  this.ToggleMoving = () => {
+    if (this.update === nop) {
+      this.update = sinUpdate;
+    } else {
+      this.update = nop;
+    }
   }
 }
 

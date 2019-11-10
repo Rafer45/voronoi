@@ -23,10 +23,10 @@ function VoronoiField(scene) {
     field.attach(cell.mesh);
   }
 
-  scene.add(field);
-
-  this.update = (time) => { 
-    // for (let cell of cells) {}
+  this.update = (deltaTime, elapsedTime) => { 
+    for (let cell of cells) {
+      cell.update(deltaTime, elapsedTime);
+    }
   }
 
   this.onMouseClick = (event) => {

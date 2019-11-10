@@ -55,11 +55,14 @@ function SceneManager(canvas) {
     return sceneSubjects;
   }
 
+  let elapsedTime = clock.getElapsedTime();
+
   this.update = () => {
-    const elapsedTime = clock.getElapsedTime();
+    const deltaTime = clock.getElapsedTime() - elapsedTime;
+    elapsedTime = clock.getElapsedTime();
 
     for (const sceneSubject of sceneSubjects) {
-      sceneSubject.update(elapsedTime);
+      sceneSubject.update(deltaTime, elapsedTime);
     }
 
     renderer.render(scene, camera);
