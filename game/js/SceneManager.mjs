@@ -93,6 +93,21 @@ function SceneManager(canvas) {
     }
   }
 
+  this.onKeyDown = (event) => {
+    // Skip repeats, we never want them in game input
+    if (event.repeat) return;
+
+    for (const sceneSubject of sceneSubjects) {
+      sceneSubject.onKeyDown(event);
+    }
+  }
+
+  this.onKeyUp = (event) => {
+    for (const sceneSubject of sceneSubjects) {
+      sceneSubject.onKeyUp(event);
+    }
+  }
+
   // Assumes we have a top-down orthographic camera.
   // Takes the coordinate of a click on the window.
   // Returns the coordinate of the corresponding world point
