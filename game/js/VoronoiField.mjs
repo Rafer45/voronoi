@@ -2,12 +2,24 @@
 import { Player } from './Player.mjs'
 import { VoronoiCell } from './VoronoiCell.mjs'
 import * as THREE from './libs/thr.js';
+import Delaunator from './node_modules/delaunator/index.js';
+import * as DU from './DelaunayUtils.mjs'
+
+console.log(Delaunator)
 
 function VoronoiField(scene) {
   const voronoiCount = 50;
-  const cells = [];
 
   const field = new THREE.Object3D();
+  const cells = [];
+
+  // Black cells making a convex hull outside.
+  // These make voronoi collision checking a lot simpler.
+  (newCell(0x000000, -5, -5)).ToggleMoving();
+  (newCell(0x000000, 5, -5)).ToggleMoving();
+  (newCell(0x000000, 5, 5)).ToggleMoving();
+  (newCell(0x000000, -5, 5)).ToggleMoving();
+
   
   const color = new THREE.Color();
   color.setHSL(Math.random(), 0.5, 0.6);
@@ -25,6 +37,7 @@ function VoronoiField(scene) {
 
   // PLAYER ONE
   // TODO: don't use hardcoded colors or controls or xy values (?)
+  // TODO: I don't like the distinction between playeronecell and playerone.cell
   const playerOneCell = newCell(0xFF0000, 1, 1);
 
   // TODO: It's a little weird that we are making a cell and
@@ -39,9 +52,9 @@ function VoronoiField(scene) {
     'right': 'KeyD'
   }
   const playerOne = new Player(playerOneCell, playerOneControls);
+  const playerOneCellId = cells.length - 1;
 
   const playerTwoCell = newCell(0x00FFFF, -1, -1);
-
   playerTwoCell.ToggleMoving();
 
   const playerTwoControls = {
@@ -51,18 +64,18 @@ function VoronoiField(scene) {
     'right': 'ArrowRight'
   }
   const playerTwo = new Player(playerTwoCell, playerTwoControls);
-
-  // PLAYER TWO
-  // TODO: player two
+  const playerTwoCellId = cells.length - 1;
 
   function newCell(color, x, y) {
     let cell = new VoronoiCell(scene, color, x, y)
 
     cells.push(cell);
     field.attach(cell.mesh);
-    return cell
+
+    return cell;
   }
 
+  this.delaunay;
   this.update = (deltaTime, elapsedTime) => { 
     for (let cell of cells) {
       cell.update(deltaTime, elapsedTime);
@@ -70,6 +83,23 @@ function VoronoiField(scene) {
 
     playerOne.update(deltaTime);
     playerTwo.update(deltaTime);
+
+    this.delaunay = Delaunator.from(cells,
+      c => c.mesh.position.x,
+      c => c.mesh.position.y);
+
+    console.log(DU.pointsAroundPoint(this.delaunay, playerOneCellId));
+    const playerOneNeighbors = DU.pointsAroundPoint(this.delaunay, playerOneCellId);
+    if (playerOneNeighbors.includes(playerTwoCellId)) {
+      // TODO: This is really silly. Make some method that lets you change cell color or don't change
+      // the cell color at all.
+      playerOneCell.mesh.children[1].material.color.setHex(0x00FF00)
+    } else {
+      // TODO: This is really silly. Make some method that lets you change cell color or don't change
+      // the cell color at all.
+      playerOneCell.mesh.children[1].material.color.setHex(0xFF0000)
+    }
+    // console.log(delaunay.hull);
   }
 
   this.onMouseClick = (event) => {
