@@ -8,6 +8,7 @@ function nop() {
 }
 
 function VoronoiCell(scene, color, x, y) {
+  if (color.isColor) color = color.getHex();
   const cellMesh = new THREE.Object3D();
 
   const coneRadius = 5;
@@ -44,8 +45,10 @@ function VoronoiCell(scene, color, x, y) {
   function sinUpdate(deltaTime) {
     lifeTime += deltaTime;
 
-    let newX = x + amplitude*Math.sin(speed*lifeTime + tShift) - amplitude*Math.sin(tShift);
-    this.mesh.position.setX(newX);
+    // For sinusoidal movement, use cosine speed every frame
+    // a*sin(kx + s) = a*k*cos(kx + s) 
+    let xDelta = amplitude*speed*Math.cos(lifeTime*speed + tShift)*deltaTime;
+    this.mesh.translateX(xDelta);
   }
 
   this.update = sinUpdate;
@@ -56,6 +59,14 @@ function VoronoiCell(scene, color, x, y) {
     } else {
       this.update = nop;
     }
+  }
+
+  this.SetColor = (colorHex) => {
+    this.mesh.children[1].material.color.setHex(colorHex);
+  }
+
+  this.RestoreColor = () => {
+    this.SetColor(color);
   }
 }
 

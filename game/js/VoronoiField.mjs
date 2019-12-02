@@ -7,18 +7,21 @@ import * as DU from './DelaunayUtils.mjs'
 
 console.log(Delaunator)
 
-function VoronoiField(scene) {
-  const voronoiCount = 50;
+function VoronoiField(scene, voronoiCount, width, height) {
+  const halfWidth = width / 2;
+  const halfHeight = height / 2;
+  // const voronoiCount = 100;
 
   const field = new THREE.Object3D();
   const cells = [];
 
+
   // Black cells making a convex hull outside.
   // These make voronoi collision checking a lot simpler.
-  (newCell(0x000000, -5, -5)).ToggleMoving();
-  (newCell(0x000000, 5, -5)).ToggleMoving();
-  (newCell(0x000000, 5, 5)).ToggleMoving();
-  (newCell(0x000000, -5, 5)).ToggleMoving();
+  (newCell(0x000000, -width*0.8, -width*0.8)).ToggleMoving();
+  (newCell(0x000000, width*0.8, -width*0.8)).ToggleMoving();
+  (newCell(0x000000, width*0.8, width*0.8)).ToggleMoving();
+  (newCell(0x000000, -width*0.8, width*0.8)).ToggleMoving();
 
   
   const color = new THREE.Color();
@@ -27,8 +30,8 @@ function VoronoiField(scene) {
   for (let i = 0; i < voronoiCount; i++) {
     console.log(i);
     color.offsetHSL(1.0/voronoiCount, 0, 0);
-    let x = Math.random()*6 - 3;
-    let y = Math.random()*3 - 1.5;
+    let x = Math.random()*width - halfWidth;
+    let y = Math.random()*height - halfHeight;
 
     newCell(color, x, y);
   }
@@ -53,9 +56,10 @@ function VoronoiField(scene) {
   }
   const playerOne = new Player(playerOneCell, playerOneControls);
   const playerOneCellId = cells.length - 1;
+  playerOneCell.mesh.visible = true;
 
   const playerTwoCell = newCell(0x00FFFF, -1, -1);
-  playerTwoCell.ToggleMoving();
+  // playerTwoCell.ToggleMoving();
 
   const playerTwoControls = {
     'up': 'ArrowUp',
@@ -65,6 +69,7 @@ function VoronoiField(scene) {
   }
   const playerTwo = new Player(playerTwoCell, playerTwoControls);
   const playerTwoCellId = cells.length - 1;
+  // playerTwoCell.mesh.visible = true;
 
   function newCell(color, x, y) {
     let cell = new VoronoiCell(scene, color, x, y)
@@ -72,9 +77,13 @@ function VoronoiField(scene) {
     cells.push(cell);
     field.attach(cell.mesh);
 
+    // REMOVE PLEASE
+    cell.SetColor(0);
+
     return cell;
   }
 
+  let playerOneNeighbors = [];
   this.delaunay;
   this.update = (deltaTime, elapsedTime) => { 
     for (let cell of cells) {
@@ -88,18 +97,16 @@ function VoronoiField(scene) {
       c => c.mesh.position.x,
       c => c.mesh.position.y);
 
-    console.log(DU.pointsAroundPoint(this.delaunay, playerOneCellId));
-    const playerOneNeighbors = DU.pointsAroundPoint(this.delaunay, playerOneCellId);
-    if (playerOneNeighbors.includes(playerTwoCellId)) {
-      // TODO: This is really silly. Make some method that lets you change cell color or don't change
-      // the cell color at all.
-      playerOneCell.mesh.children[1].material.color.setHex(0x00FF00)
-    } else {
-      // TODO: This is really silly. Make some method that lets you change cell color or don't change
-      // the cell color at all.
-      playerOneCell.mesh.children[1].material.color.setHex(0xFF0000)
+    for (const neighbor of playerOneNeighbors) {
+      const neighborCell = cells[neighbor]
+      neighborCell.SetColor(0);
     }
-    // console.log(delaunay.hull);
+
+    playerOneNeighbors = DU.pointsAroundPoint(this.delaunay, playerOneCellId);
+    for (const neighbor of playerOneNeighbors) {
+      const neighborCell = cells[neighbor]
+      neighborCell.RestoreColor(0);
+    }
   }
 
   this.onMouseClick = (event) => {

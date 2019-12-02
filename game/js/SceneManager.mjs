@@ -47,7 +47,7 @@ function SceneManager(canvas) {
   function createSceneSubjects(scene) {
     console.log("CREATESCENESUBS");
     const sceneSubjects = [
-      new VoronoiField(scene)
+      new VoronoiField(scene, 100, 12, 6) // VoronoiField(scene, voronoiCount, width, height)
       // new Player(scene),
       // new Player(scene)
     ]
