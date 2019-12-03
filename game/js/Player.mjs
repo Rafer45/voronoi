@@ -1,36 +1,39 @@
 
 import * as THREE from './libs/thr.js';
+import { Grenade } from './Grenade.mjs'
 
-function Player(cell, controls) {
+function Player(cell, controls, spd) {
 
-  const speed = 1;
+  const speed = spd;
 
   this.wantsUp = false;
   this.wantsLeft = false;
   this.wantsDown = false;
   this.wantsRight = false;
+  this.wantsShoot = false;
 
-  const movementActions = {
+  const controlActions = {
     [controls['up']]: (x) => { this.wantsUp = x },
     [controls['left']]: (x) => { this.wantsLeft = x },
     [controls['down']]: (x) => { this.wantsDown = x },
-    [controls['right']]: (x) => { this.wantsRight = x }
+    [controls['right']]: (x) => { this.wantsRight = x },
+    // [controls['shoot']]: (x) => { this.wantsShoot = x },
   }
 
   this.onKeyDown = (event) => {
     const { code } = event;
-    if (movementActions.hasOwnProperty(code)) {
-      movementActions[code](true);
+    if (controlActions.hasOwnProperty(code)) {
+      controlActions[code](true);
     }
   }
 
   this.onKeyUp = (event) => {
     const { code } = event;
-    if (movementActions.hasOwnProperty(code)) {
-      movementActions[code](false);
+    if (controlActions.hasOwnProperty(code)) {
+      controlActions[code](false);
     }
   }
-
+  
   this.update = (deltaTime) => {
     if (this.wantsUp) {
       cell.mesh.translateY(speed*deltaTime);
@@ -44,7 +47,13 @@ function Player(cell, controls) {
     if (this.wantsRight) {
       cell.mesh.translateX(speed*deltaTime);
     }
+
+    if (this.wantsShoot) {
+      this.shoot()
+    }
   }
+
+  this.cell = () => cell
 }
 
 export { Player }

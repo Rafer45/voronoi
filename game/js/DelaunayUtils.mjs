@@ -9,7 +9,6 @@ function prevHalfedge(e) {
   return (e % 3 === 0) ? e + 2 : e - 1;
 }
 
-// TODO: good comment
 // Takes the id of some point p.
 // Finds the id of some half edge that is incident on that point
 function findIncomingHalfedge(delaunay, p) {

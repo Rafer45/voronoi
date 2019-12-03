@@ -7,7 +7,7 @@ function nop() {
   // do nothing
 }
 
-function VoronoiCell(scene, color, x, y) {
+function VoronoiCell(scene, color, x, y, id, sinDifferentialUpdate=false) {
   if (color.isColor) color = color.getHex();
   const cellMesh = new THREE.Object3D();
 
@@ -45,11 +45,18 @@ function VoronoiCell(scene, color, x, y) {
   function sinUpdate(deltaTime) {
     lifeTime += deltaTime;
 
-    // For sinusoidal movement, use cosine speed every frame
-    // a*sin(kx + s) = a*k*cos(kx + s) 
-    let xDelta = amplitude*speed*Math.cos(lifeTime*speed + tShift)*deltaTime;
-    this.mesh.translateX(xDelta);
+    if (sinDifferentialUpdate) {
+      // For sinusoidal movement, use cosine speed every frame
+      // a*sin(kx + s) = a*k*cos(kx + s) 
+      let xDelta = amplitude*speed*Math.cos(lifeTime*speed + tShift)*deltaTime;
+      this.mesh.translateX(xDelta);
+    } else {
+      //
+      let newX = x + amplitude*Math.sin(speed*lifeTime + tShift) - amplitude*Math.sin(tShift);
+      this.mesh.position.setX(newX);
+    }
   }
+  
 
   this.update = sinUpdate;
 
@@ -61,13 +68,38 @@ function VoronoiCell(scene, color, x, y) {
     }
   }
 
+  this.StopMoving = () => {
+    this.update = nop
+  }
+
   this.SetColor = (colorHex) => {
     this.mesh.children[1].material.color.setHex(colorHex);
+  }
+
+  this.HardSetColor = (colorHex) => {
+    this.SetColor(colorHex)
+    color = colorHex
   }
 
   this.RestoreColor = () => {
     this.SetColor(color);
   }
+
+  this.Teleport = (x, y) => {
+    this.mesh.position.x = x
+    this.mesh.position.y = y
+  }
+
+  this.pseudoDestroyed = false
+
+  // Terrible hack to simulate destruction of cells without affecting id validity
+  this.PseudoDestroy = () => {
+    this.Teleport(-10, -10)
+    this.StopMoving()
+    this.pseudoDestroyed = true
+  }
+
+  this.id = () => id
 }
 
 // TODO: Move this somewhere else so it can be used by other files
@@ -87,5 +119,6 @@ function placeOnScene(scene, mesh, x, y) {
 
   return mesh;
 }
+
 
 export { VoronoiCell }
