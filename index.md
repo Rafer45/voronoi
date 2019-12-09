@@ -1,30 +1,28 @@
 
 ## Description
 
-Valorous Voronoi is a two-player arcade battle game set on a dynamically rendered Voronoi diagram. Each player is associated with one color. The game is played in two phases: setup and combat. During setup, each player puts 5 bases on the screen, with no knowledge of where the opponent placed bases before they place them. Think *Battleship*. The location of each base is then revealed, and a Voronoi diagram is drawn, using each base as a point for the diagram. The cells are filled in with the base owner's color.
+Valorous Voronoi is a two-player arcade battle game set on a dynamically rendered Voronoi diagram. It involves two players, Red and Blue. The goal of each player is to destroy the other player.
 
-The combat phase then begins. Both players can move around the field. Players can hit their own bases to move them, affecting the shape of the diagram. Players themselves may be treated as points for the Voronoi diagram. Other concrete aspects of the combat phase will be arrived at with experimentation. As an example of a possible mechanic: players may be the same color as the background of their bases, making them invisible against their own background. What is currently set in stone is that players will fight on the diagram and that the diagram will dynamically change through the round.
+Red is visible and illuminates neighboring cells. Red can shoot grenades that also illuminate neighbors. They detonate after a short while, destroying neighboring cells and creating a base. Any cell that isn't illuminated is dark. Dark cells are all the same color, so they blend together and cannot easily be told apart. Blue is a dark cell, so it is harder to spot, but it is also slower than Red.
+
+Bases created by grenades can be captured by Red or Blue. A captured base can be used to destroy one's opponent.
+
+There are three rules for player destruction
+
+1. If Blue touches Red, Red is destroyed.
+2. If a player is caught in a grenade explosion, that player dies.
+3. If a player touches an opponent's base, that player dies.
 
 ## Technology
-Valorous Voronoi will use [three.js](https://threejs.org/) for rendering.
+Valorous Voronoi uses the following technologies:
+* [three.js](https://threejs.org/) for rendering.
+* [Delaunator](https://github.com/mapbox/delaunator) for Delaunay triangulation.
 
-## Schedule
+## Geometry
 
-Week | Milestone
----- | ---------
-4    | Make project website
-5    | Learn to use three.js (Complete the demos in three.js website)
-6    | Compute static randomly generated Voronoi diagram
-7    | Render static randomly generated Voronoi diagram
-8    | Render filled in diagram from dropped points
-9    | Add players
-10   | Treat players as Voronoi points
-11   | Let players attack each other and each other's bases (ballistic physics for bases)
-12   | Add sound effects
-13   | Add start menu
-14   | Add particle effects, screenshake, randomized initial colors
-15   | Buffer week
+TODO fill this
 
 ## References
 1. [three.js](https://threejs.org/)
 2. Wikipedia contributors, "Voronoi diagram," *Wikipedia, The Free Encyclopedia*. [Link](https://en.wikipedia.org/wiki/Voronoi_diagram)
+3. Soffritti, P. (2019, February 24). How to organize your Three.js code in a cleaner way. [Link](https://medium.com/@soffritti.pierfrancesco/how-to-organize-the-structure-of-a-three-js-project-77649f58fa3f).

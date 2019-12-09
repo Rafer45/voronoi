@@ -54,11 +54,10 @@ function VoronoiField(scene, voronoiCount, width, height) {
   playerOneCell.ToggleMoving();
 
   const playerOneControls = {
-    'up': 'KeyW',
-    'left': 'KeyA',
-    'down': 'KeyS',
-    'right': 'KeyD',
-    // 'shoot': 'Space',
+    'up': 'ArrowUp',
+    'left': 'ArrowLeft',
+    'down': 'ArrowDown',
+    'right': 'ArrowRight',
   }
   const playerOne = new Player(playerOneCell, playerOneControls, 1.5);
   luminify(playerOne.cell())
@@ -67,11 +66,10 @@ function VoronoiField(scene, voronoiCount, width, height) {
   // playerTwoCell.ToggleMoving();
 
   const playerTwoControls = {
-    'up': 'ArrowUp',
-    'left': 'ArrowLeft',
-    'down': 'ArrowDown',
-    'right': 'ArrowRight',
-    // 'shoot': 'ControlRight',
+    'up': 'KeyW',
+    'left': 'KeyA',
+    'down': 'KeyS',
+    'right': 'KeyD',
   }
   const playerTwo = new Player(playerTwoCell, playerTwoControls, 1);
   luminify(playerTwo.cell())
