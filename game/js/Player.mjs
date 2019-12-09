@@ -35,21 +35,23 @@ function Player(cell, controls, spd) {
   }
   
   this.update = (deltaTime) => {
-    if (this.wantsUp) {
-      cell.mesh.translateY(speed*deltaTime);
-    }
-    if (this.wantsLeft) {
-      cell.mesh.translateX(-speed*deltaTime);
-    }
-    if (this.wantsDown) {
-      cell.mesh.translateY(-speed*deltaTime);
-    }
-    if (this.wantsRight) {
-      cell.mesh.translateX(speed*deltaTime);
-    }
+    if (!this.cell().pseudoDestroyed) {
+      if (this.wantsUp) {
+        cell.mesh.translateY(speed*deltaTime);
+      }
+      if (this.wantsLeft) {
+        cell.mesh.translateX(-speed*deltaTime);
+      }
+      if (this.wantsDown) {
+        cell.mesh.translateY(-speed*deltaTime);
+      }
+      if (this.wantsRight) {
+        cell.mesh.translateX(speed*deltaTime);
+      }
 
-    if (this.wantsShoot) {
-      this.shoot()
+      if (this.wantsShoot) {
+        this.shoot()
+      }
     }
   }
 
